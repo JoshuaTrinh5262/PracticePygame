@@ -1,6 +1,7 @@
 # Example file showing a circle moving on screen
 import pygame
 import setting
+import button
 
 # pygame setup
 pygame.init()
@@ -10,7 +11,6 @@ gamePause = False
 
 screen = pygame.display.set_mode((setting.screenWidth, setting.screenHeight))
 clock = pygame.time.Clock()
-running = True
 deltaTimeInSeconds = 0
 
 #define font
@@ -18,27 +18,23 @@ font = pygame.font.SysFont("arialblack", 40)
 
 textColor = (0,0,255)
 
-startButton = pygame.img.load("play.png").convert_alpha()
-optionButton = pygame.img.load("option.png").convert_alpha()
+startButtonImage = pygame.image.load('play.png').convert_alpha()
+optionButtonImage = pygame.image.load('option.png').convert_alpha()
 
-#button
-class Button():
-    def __init__(self, x, y ,image):
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
-    def draw(self):
-        screen.blit(self.image, (self.rect.x, self.rect.y))
 def drawText(text, font, textColor, x, y):
     img = font.render(text, True, textColor)
     screen.blit(img,(x, y))
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
+#
+startButton = button.Button(setting.screenWidth / 2, 200, startButtonImage, 1)
+optionButton = button.Button(setting.screenWidth / 2, 300, optionButtonImage, 1)
+3
+running = True
 while running:
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("purple")
-
     if gamePause == False:
         pygame.draw.circle(screen, "red", player_pos, 40)
 
@@ -53,7 +49,13 @@ while running:
             player_pos.x += 300 * deltaTimeInSeconds
         pass
     else :
-        drawText("Game Paused", font , textColor, screenWidth / 2 , screenHeight / 2)
+        if startButton.draw(screen):
+            print("Start")
+        if optionButton.draw(screen):
+            print("Option")
+        if optionButton.draw(screen):
+            print("Option")
+        # drawText("Game Paused", font , textColor, setting.screenWidth / 2 , setting.screenHeight / 2)
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
